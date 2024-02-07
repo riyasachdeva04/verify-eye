@@ -44,6 +44,10 @@ npm install
 pnpm install
 ```
 
+```bash
+brew install flac
+```
+
 ### Run the newly created app
 
 ```bash
