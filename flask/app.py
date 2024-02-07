@@ -111,10 +111,7 @@ def home():
         transcripts.append({'video_id': video_id, 'transcription': transcript})
         os.remove(wav_file)
 
-        # get new transcript
-        new_transcript = ' hello hi i sell tomatoes'
-        
-    pass
+        return jsonify({"transcripts": transcripts}), 200
 
 if __name__=='__main__':
     app.run(debug=True, port=5001)
