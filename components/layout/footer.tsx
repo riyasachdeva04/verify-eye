@@ -27,7 +27,7 @@ export default function Footer() {
           © {new Date().getFullYear()}{" "}
           <a
             target="_blank"
-            href="https://redpangilinan.live/"
+            href="/"
             className="hover:underline"
           >
             Bean Bag Coders
