@@ -57,10 +57,10 @@ export default function MyForm() {
   }
 
   const dropdownOptions = [
-    { value: "Lex", label: "Lex Fridman", url: "https://www.youtube.com/@lexfridman" },
-    { value: "Joe", label: "Joe Rogan", url: "https://www.youtube.com/@joerogan" },
-    { value: "Huberman", label: "Andrew Huberman", url: "https://www.youtube.com/@hubermanlab" },
-    { value: "Others", label: "Others", url: "" },
+    { value: "Lex Fridman", label: "Lex Fridman", url: "https://www.youtube.com/@lexfridman" },
+    { value: "Joe Rogan", label: "Joe Rogan", url: "https://www.youtube.com/@joerogan" },
+    { value: "Andrew Huberman", label: "Andrew Huberman", url: "https://www.youtube.com/@hubermanlab" },
+    { value: "Others", label: "Other (provide url below)", url: "" },
   ];
 
   return (
@@ -112,7 +112,7 @@ export default function MyForm() {
               <FormItem>
                 <FormLabel>Host's Youtube Podcast URL</FormLabel>
                 <FormControl>
-                  <Input required placeholder="Enter URL" {...field} />
+                  <Input required placeholder="https://www.youtube.com/@podcastLink" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -139,7 +139,7 @@ export default function MyForm() {
             <FormItem>
               <FormLabel>Enter Shorts/Reels URL</FormLabel>
               <FormControl>
-                <Input required placeholder="https://www.instagram.com/reels/random-reel" {...field} />
+                <Input required placeholder="https://www.instagram.com/reels/randomReel" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
