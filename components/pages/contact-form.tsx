@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const formSchema = z.object({
   dropdown: z.string().min(1, {
@@ -23,31 +23,44 @@ const formSchema = z.object({
   textInput: z.string().min(1, {
     message: "Text input is required",
   }),
-  urlInput: z.string().url({
+  podcastUrlInput: z.string().url({
+    message: "Invalid URL",
+  }),
+  shortsUrlInput: z.string().url({
     message: "Invalid URL",
   }),
 });
 
+
+
 export default function MyForm() {
+  const [showUrlInput, setShowUrlInput] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       dropdown: "",
       textInput: "",
-      urlInput: "",
+      podcastUrlInput: "",
+      shortsUrlInput: "",
     },
   });
-
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Handle form submission
-    console.log(values);
+    const selectedOption = dropdownOptions.find(option => option.value === values.dropdown);
+    const urlToSend = selectedOption ? selectedOption.url : values.podcastUrlInput;
+    const reelsUrlToSend = values.shortsUrlInput;
+
+    console.log('Podcast URL:', urlToSend);
+    console.log('Reels URL:', reelsUrlToSend);
+
     form.reset();
   }
 
   const dropdownOptions = [
-    { value: "Lex", label: "Lex Friedman" },
-    { value: "Joe", label: "Joe Rogan" },
-    { value: "Huberman", label: "Andrew Huberman" },
+    { value: "Lex Fridman", label: "Lex Fridman", url: "https://www.youtube.com/@lexfridman" },
+    { value: "Joe Rogan", label: "Joe Rogan", url: "https://www.youtube.com/@joerogan" },
+    { value: "Andrew Huberman", label: "Andrew Huberman", url: "https://www.youtube.com/@hubermanlab" },
+    { value: "Others", label: "Other (provide url below)", url: "" },
   ];
 
   return (
@@ -69,7 +82,20 @@ export default function MyForm() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {dropdownOptions.map((option) => (
-                      <DropdownMenuItem key={option.value} {...field}>{option.label}</DropdownMenuItem>
+                      <DropdownMenuItem
+                        key={option.value}
+                        onClick={() => {
+                          if (option.value === "Others") {
+                            setShowUrlInput(true);
+                          } else {
+                            setShowUrlInput(false);
+                            form.setValue("podcastUrlInput", "");
+                          }
+                          field.onChange(option.value);
+                        }}
+                      >
+                        {option.label}
+                      </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -78,14 +104,29 @@ export default function MyForm() {
             </FormItem>
           )}
         />
+        {showUrlInput && (
+          <FormField
+            control={form.control}
+            name="podcastUrlInput"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Host's Youtube Podcast URL</FormLabel>
+                <FormControl>
+                  <Input required placeholder="https://www.youtube.com/@podcastLink" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="textInput"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Enter Speaker</FormLabel>
+              <FormLabel>Enter the Speaker Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter text" {...field} />
+                <Input required placeholder="Elon Musk" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,12 +134,12 @@ export default function MyForm() {
         />
         <FormField
           control={form.control}
-          name="urlInput"
+          name="shortsUrlInput"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Enter Shorts/Reels URL</FormLabel>
               <FormControl>
-                <Input placeholder="Enter URL" {...field} />
+                <Input required placeholder="https://www.instagram.com/reels/randomReel" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
