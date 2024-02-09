@@ -1,7 +1,3 @@
-## Preview
-
-![Next Landing Preview](public/og.jpg)
-
 ## Getting Started
 
 Follow the instructions based on the package manager you use (npm/pnpm)
