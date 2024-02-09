@@ -76,7 +76,7 @@ def home():
         return jsonify({'error': 'URL not provided'}), 400
     
     url = request.json['url']
-    
+    reelsUrl = request.json['reelsUrl']
     # Scraping the channel URL to get the channel ID
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -158,7 +158,7 @@ def home():
 
     # Calculate query vector
    
-    audio_title = download_audio(url)
+    audio_title = download_audio(reelsUrl)
         
     if audio_title is None:
             return jsonify({'error': f'Failed to download audio for video {video_id}'}), 500
