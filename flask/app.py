@@ -18,7 +18,7 @@ from nltk import download
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import gensim.downloader as api
-from model_use import model
+from model_setup import model
 app = Flask(__name__)
 
 OUTPUT_PATH = "downloads"
