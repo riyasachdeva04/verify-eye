@@ -1,9 +1,3 @@
-# Next Landing
-
-Easy to setup, customizable, quick, and responsive landing page starter built with [Next.js](https://nextjs.org) and [shadcn/ui](https://ui.shadcn.com).
-
-- [Live Preview](https://nextlanding.rdev.pro)
-
 ## Preview
 
 ![Next Landing Preview](public/og.jpg)
@@ -11,25 +5,6 @@ Easy to setup, customizable, quick, and responsive landing page starter built wi
 ## Getting Started
 
 Follow the instructions based on the package manager you use (npm/pnpm)
-
-### Start by setting up a new project
-
-
-```bash
-pnpm dlx degit redpangilinan/next-shadcn-landing my-app
-```
-
-### Change package.json name
-
-```json
-"name": "next-shadcn-landing",
-```
-
-to
-
-```json
-"name": "my-app",
-```
 
 ### Install dependencies
 
