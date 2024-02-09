@@ -58,7 +58,7 @@ def home():
     
     url = request.json['url']
     reelsUrl = request.json['reelsUrl']
-    your_search_uery = request.json['speakerName']
+    your_search_query = request.json['speakerName']
     # Scraping the channel URL to get the channel ID
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -81,7 +81,7 @@ def home():
             channelId=channel_id,
             order='date',  # Set order to 'date' to sort by date
             type='video',  # Specify the type as 'video'
-            q='your_search_query',  # Add your search query here
+            q=your_search_query,  # Add your search query here
             maxResults=MAX_RESULTS
             ).execute()
         # Extract video IDs
