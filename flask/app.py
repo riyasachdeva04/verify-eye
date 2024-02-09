@@ -157,7 +157,26 @@ def home():
     document_vectors = np.array(document_vectors)
 
     # Calculate query vector
-    query_sentence = "i am a young girl, i respect people"
+   
+    audio_title = download_audio(url)
+        
+    if audio_title is None:
+            return jsonify({'error': f'Failed to download audio for video {video_id}'}), 500
+        
+     mp3_file = os.path.join(OUTPUT_PATH, f"{audio_title}.mp3")
+     wav_file = os.path.join(OUTPUT_PATH, "result.wav")
+
+        # Convert audio to WAV format
+     audio_to_wav(mp3_file, wav_file)
+     os.remove(mp3_file)
+
+        # Get transcript from the audio
+     query_sentence = get_transcript(wav_file)
+     #transcripts.append({'video_id': video_id, 'transcript': transcript})
+     os.remove(wav_file)
+
+
+    
     query_vec = np.zeros(100)
     count = 0
     for word in query_sentence.split():
