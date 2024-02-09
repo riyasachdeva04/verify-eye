@@ -28,9 +28,6 @@ if not os.path.exists(model_path):
 print("Loading model...")
 model = whisperx.load_model(model_path, device)
 
-audio = whisperx.load_audio(audio_file)
-result = model.transcribe(audio, batch_size=batch_size)
-
 #print(result["segments"]) # before alignment
 
 # Delete model if low on GPU resources
