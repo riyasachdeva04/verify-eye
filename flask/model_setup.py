@@ -22,10 +22,10 @@ if not torch.cuda.is_available() and device == "cuda":
 
 if not os.path.exists(model_path):
     print("Downloading model...")
-    whisperx.download_model("medium", model_dir, compute_type=compute_type,download_root = model_path)
+    model = whisperx.download_model("medium",device, compute_type=compute_type,download_root = model_path)
 
 print("Loading model...")
-model = whisperx.load_model(model_path, device)
+model = model
 
 
 # Delete model if low on GPU resources
