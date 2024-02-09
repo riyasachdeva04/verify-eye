@@ -14,9 +14,6 @@ Follow the instructions based on the package manager you use (npm/pnpm)
 
 ### Start by setting up a new project
 
-```bash
-npx degit redpangilinan/next-shadcn-landing my-app
-```
 
 ```bash
 pnpm dlx degit redpangilinan/next-shadcn-landing my-app
@@ -36,9 +33,6 @@ to
 
 ### Install dependencies
 
-```bash
-npm install
-```
 
 ```bash
 pnpm install
@@ -49,10 +43,6 @@ brew install flac
 ```
 
 ### Run the newly created app
-
-```bash
-npm run dev
-```
 
 ```bash
 pnpm run dev
