@@ -23,12 +23,11 @@ if not torch.cuda.is_available() and device == "cuda":
 
 if not os.path.exists(model_path):
     print("Downloading model...")
-    whisperx.download_model("medium", model_dir, compute_type=compute_type)
+    whisperx.download_model("medium", model_dir, compute_type=compute_type,download_root = model_path)
 
 print("Loading model...")
 model = whisperx.load_model(model_path, device)
 
-#print(result["segments"]) # before alignment
 
 # Delete model if low on GPU resources
 # import gc; gc.collect(); torch.cuda.empty_cache(); del model
