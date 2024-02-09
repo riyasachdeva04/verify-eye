@@ -18,11 +18,11 @@ from nltk import download
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import gensim.downloader as api
-
+from model_use import model
 app = Flask(__name__)
 
 OUTPUT_PATH = "downloads"
-
+YOUR_HF_TOKEN = "insert huggingface token here"
 # Initialize the speech recognizer
 r = sr.Recognizer()
 
@@ -39,6 +39,25 @@ def download_audio(url):
         return None
 
 def get_transcript(audio_file_path):
+    audio = audio_file_path
+    result = model.transcribe(audio,batch_size = batch_size)
+    model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
+    result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
+    diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
+
+    diarize_segments = diarize_model(audio)
+#     diarize_model(audio, min_speakers=min_speakers, max_speakers=max_speakers)
+
+    result = whisperx.assign_word_speakers(diarize_segments, result)
+    #print(diarize_segments) CHECK WHILE DEBUGGING
+    #print(result["segments"]) # segments are now assigned speaker IDs
+    transcript = ""
+    for seg in result['segments']:
+        transcript += str(seg['speaker']+":") + '\n'
+        transcript += str(seg['text']) + '\n'
+    return transcript
+    
+def get_transcript_without_speakers(audio_file_path):
     with sr.AudioFile(audio_file_path) as source:
         audio = r.record(source)
     try:
@@ -105,7 +124,7 @@ def home():
         os.remove(mp3_file)
 
         # Get transcript from the audio
-        transcript = get_transcript(wav_file)
+        transcript = get_transcript_without_speakers(wav_file)
         transcripts.append({'video_id': video_id, 'transcript': transcript})
         os.remove(wav_file)
 
