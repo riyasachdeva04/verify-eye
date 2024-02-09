@@ -18,7 +18,7 @@ from nltk import download
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import gensim.downloader as api
-from model_setup import model
+
 app = Flask(__name__)
 
 OUTPUT_PATH = "downloads"
@@ -37,25 +37,6 @@ def download_audio(url):
     except Exception as e:
         print(f"Download Error: {str(e)}")
         return None
-
-def get_transcript(audio_file_path):
-    audio = audio_file_path
-    result = model.transcribe(audio,batch_size = batch_size)
-    model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
-    result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
-    diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
-
-    diarize_segments = diarize_model(audio)
-#     diarize_model(audio, min_speakers=min_speakers, max_speakers=max_speakers)
-
-    result = whisperx.assign_word_speakers(diarize_segments, result)
-    #print(diarize_segments) CHECK WHILE DEBUGGING
-    #print(result["segments"]) # segments are now assigned speaker IDs
-    transcript = ""
-    for seg in result['segments']:
-        transcript += str(seg['speaker']+":") + '\n'
-        transcript += str(seg['text']) + '\n'
-    return transcript
     
 def get_transcript_without_speakers(audio_file_path):
     with sr.AudioFile(audio_file_path) as source:
@@ -159,25 +140,31 @@ def home():
     document_vectors = np.array(document_vectors)
 
     # Calculate query vector
-   
-    audio_title = download_audio(reelsUrl)
-        
-    if audio_title is None:
-            return jsonify({'error': f'Failed to download audio for video {video_id}'}), 500
-        
-     mp3_file = os.path.join(OUTPUT_PATH, f"{audio_title}.mp3")
-     wav_file = os.path.join(OUTPUT_PATH, "result.wav")
+    query_sentence = '''
+    SPEAKER_00:
+ So it's impossible to imagine a scenario where 10 years from now, I say, where a customer says, I love Amazon, I just wish the prices were a little higher.
+SPEAKER_00:
+Or I love Amazon, I just wish you delivered a little more slowly.
+SPEAKER_00:
+So when you identify the big things, you can tell they're worth putting energy into because they're stable in time.
+SPEAKER_00:
+But you're asking about something a little different, which is in every customer experience, there are those big things.
+SPEAKER_00:
+And by the way, it's astonishingly hard to focus even on just the big things.
+SPEAKER_00:
+ Even though they're obvious, they're really hard to focus on.
+SPEAKER_00:
+But in addition to that, there are all these little tiny customer experience deficiencies, and we call those paper cuts.
+SPEAKER_00:
+We make long lists of them, and then we have dedicated teams that go fix paper cuts.
+SPEAKER_00:
+Because the teams working on the big issues never get to the paper cuts.
+SPEAKER_00:
+ They never work their way down the list to get to they're working on big things as they should and as you want them to.
+SPEAKER_00:
+And so you need special teams who are charged with fixing paper cut.
 
-        # Convert audio to WAV format
-     audio_to_wav(mp3_file, wav_file)
-     os.remove(mp3_file)
-
-        # Get transcript from the audio
-     query_sentence = get_transcript(wav_file)
-     #transcripts.append({'video_id': video_id, 'transcript': transcript})
-     os.remove(wav_file)
-
-
+    '''
     
     query_vec = np.zeros(100)
     count = 0
