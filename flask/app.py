@@ -97,9 +97,11 @@ def home():
         videos_response = youtube.search().list(
             part='id',
             channelId=channel_id,
-            order='viewCount',
+            order='date',  # Set order to 'date' to sort by date
+            type='video',  # Specify the type as 'video'
+            q='your_search_query',  # Add your search query here
             maxResults=MAX_RESULTS
-        ).execute()
+            ).execute()
         # Extract video IDs
         video_ids = [item['id']['videoId'] for item in videos_response['items']]
     except KeyError as e:
