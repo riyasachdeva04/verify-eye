@@ -8,7 +8,6 @@ print("Using device:", device)
 
 # Define paths
 model_dir = "models/"
-audio_file = "audio.mp3"
 batch_size = 8  # reduce if low on GPU mem
 compute_type = "int8"  # change to "int8" if low on GPU mem (may reduce accuracy)
 
