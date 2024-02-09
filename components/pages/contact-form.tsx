@@ -49,6 +49,7 @@ export default function MyForm() {
         const selectedOption = dropdownOptions.find(option => option.value === values.dropdown);
         const urlToSend = selectedOption ? selectedOption.url : values.podcastUrlInput;
         const reelsUrlToSend = values.shortsUrlInput;
+        const speakerName = values.textInput;
 
         console.log('Podcast URL:', urlToSend);
         console.log('Reels URL:', reelsUrlToSend);
@@ -56,6 +57,7 @@ export default function MyForm() {
         axios.post("http://localhost:5001/", {
             url: urlToSend,
             reelsUrl: reelsUrlToSend,
+            speakerName: speakerName,
         })
             .then(response => {
                 console.log('Response:', response.data);
