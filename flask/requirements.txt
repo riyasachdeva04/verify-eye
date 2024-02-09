@@ -12,7 +12,6 @@ SpeechRecognition
 pyttsx3
 python-dotenv
 flask_sqlalchemy
-# brew install flac
 pandas
 numpy
 nltk
@@ -20,3 +19,4 @@ gensim
 scikit-learn
 scipy
 POT
+git+https://github.com/m-bain/whisperx.git
